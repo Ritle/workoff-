@@ -3,7 +3,7 @@ from spreadsheets_lib import SheetReport
 import config as cfg
 import get_time_working_off as report
 from lib import *
-
+import time
 
 report.getWorkTimeBalanceReport()
 usersReport = report.users_work_time
@@ -38,14 +38,16 @@ def create_new_list_report():
     for user_data in usersReport:
         sheet_report.add_line(table_id, get_cur_m , [user_data])
 
-        if user_data[4] > 0:
-            sheet_report.set_cell_format(table_id, sheet_id, index,  5, bg_color= {"red": 0, "green": 0.8, "blue": 0.2, "alpha": 1})
-        elif user_data[4] == 0:
-            sheet_report.set_cell_format(table_id, sheet_id, index,  5, bg_color={"red": 1, "green": 1, "blue": 1, "alpha": 1})
-        else:
-            sheet_report.set_cell_format(table_id, sheet_id, index, 5, bg_color={"red": 0.8, "green": 0, "blue": 0.2, "alpha": 1})
-        index +=1 
+        if user_data not in exceptionUsers:
 
+            if user_data[4] > 0:
+                sheet_report.set_cell_format(table_id, sheet_id, index,  5, bg_color= {"red": 0.2, "green": 0.6, "blue": 0.2, "alpha": 0.8})
+            elif user_data[4] == 0:
+                sheet_report.set_cell_format(table_id, sheet_id, index,  5, bg_color={"red": 1, "green": 1, "blue": 1, "alpha": 1})
+            else:
+                sheet_report.set_cell_format(table_id, sheet_id, index, 5, bg_color={"red": 0.75, "green": 0.15, "blue": 0.1, "alpha": 0.8})
+            index +=1 
+        time.sleep(0.3)
 
 users = get_users_from_report()       
 create_new_list_report()

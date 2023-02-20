@@ -1,7 +1,9 @@
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from spreadsheets_lib import SheetReport 
 import config as cfg
 
+
+exceptionUsers = ["Гордеев Андрей", "Липовская Наталья", "Лутченко Юлия", "Макина Кристина", "Соловьева Екатерина", "Шарова Екатерина"]
 
 table_id = cfg.google_report_table_id
 
@@ -10,6 +12,11 @@ sheet_report = SheetReport(cfg.token_str, is_dev=False) # создаем объ�
 
 def get_cur_month():
     return str(datetime.today().replace(day=1)).split()[0]
+
+def get_last_month(): 
+
+    last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
+    return str(date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day))
 
 def get_cur_day():
 
@@ -27,3 +34,5 @@ def get_sheet_id(sheet_name):
     sheets = sheet_report.sheet_list(table_id)
 
     return sheets[sheet_name]
+
+print(get_last_month())
