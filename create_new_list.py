@@ -18,11 +18,11 @@ def compareLists(user):
 
 def create_new_list_report():
 
-    cur_day = get_cur_day()
+    get_cur_m = get_cur_month()
     header = ["ФИО","Отгулял (ч)","Переработка (ч)","Отработано (ч)","Итог (ч)"]
 
-    sheet_report.create_page(table_id, cur_day)
-    sheet_report.add_line(table_id, cur_day, [header])
+    sheet_report.create_page(table_id, get_cur_m)
+    sheet_report.add_line(table_id, get_cur_m, [header])
     allUsers = get_act_users()
     addUsers = list(filter(compareLists, allUsers))
 
@@ -34,16 +34,16 @@ def create_new_list_report():
     usersReport.sort(key = lambda x: x[0])
 
     index = 2
-    sheet_id = get_sheet_id(cur_day)
+    sheet_id = get_sheet_id(get_cur_m)
     for user_data in usersReport:
-        sheet_report.add_line(table_id, cur_day , [user_data])
+        sheet_report.add_line(table_id, get_cur_m , [user_data])
 
         if user_data[4] > 0:
-            sheet_report.set_cell_format(table_id, sheet_id, index,  5, bg_color= {"red": 0, "green": 1, "blue": 0, "alpha": 1})
+            sheet_report.set_cell_format(table_id, sheet_id, index,  5, bg_color= {"red": 0, "green": 0.8, "blue": 0.2, "alpha": 1})
         elif user_data[4] == 0:
             sheet_report.set_cell_format(table_id, sheet_id, index,  5, bg_color={"red": 1, "green": 1, "blue": 1, "alpha": 1})
         else:
-            sheet_report.set_cell_format(table_id, sheet_id, index, 5, bg_color={"red": 1, "green": 0, "blue": 0, "alpha": 1})
+            sheet_report.set_cell_format(table_id, sheet_id, index, 5, bg_color={"red": 0.8, "green": 0, "blue": 0.2, "alpha": 1})
         index +=1 
 
 
