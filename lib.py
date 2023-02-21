@@ -10,6 +10,11 @@ table_id = cfg.google_report_table_id
 
 sheet_report = SheetReport(cfg.token_str, is_dev=False) # создаем объект который читает из экселя
 
+def today_date():
+    return str(datetime.now()).split()[0]
+
+
+
 def get_cur_month():
     return str(datetime.today().replace(day=1)).split()[0]
 
@@ -35,4 +40,4 @@ def get_sheet_id(sheet_name):
 
     return sheets[sheet_name]
 
-print(get_last_month())
+print(today_date())

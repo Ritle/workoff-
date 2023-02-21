@@ -134,7 +134,7 @@ class SheetReport():
                 err_msg = str(e)
                 print(f'{err_cnt}: {err_msg}')
                 err_cnt -= 1
-                time.sleep(5)
+                time.sleep(60)
         print(f'Ошибка при отправке запроса add_line():\n{err_msg}', 'e')
         exit(1)
 

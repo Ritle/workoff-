@@ -2,7 +2,7 @@ import json
 from transport import RPCCall
 from datetime import datetime as dtm
 from datetime import timedelta as tdm
-
+import time
 import config as cfg
 
 import lib
@@ -33,7 +33,7 @@ def getWorkTimeBalanceReport():
 
             
            
-
+            
             getUserReport(user_name_value, user_PK_value, user_PersonID_value, workedOffTime)
 
         page_num += 1
@@ -46,6 +46,8 @@ def getWorkTimeBalanceReport():
 
 
 def getUserReport(user_name, user_PK, user_PersonID, workedOffTime):
+
+    time.sleep(1)
 
     print("Проверяем", user_name)
 

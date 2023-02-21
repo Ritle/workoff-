@@ -18,7 +18,7 @@ def compareLists(user):
 
 def create_new_list_report():
 
-    get_cur_m = get_cur_month()
+    get_cur_m = today_date()
     header = ["ФИО","Отгулял (ч)","Переработка (ч)","Отработано (ч)","Итог (ч)"]
 
     sheet_report.create_page(table_id, get_cur_m)
@@ -35,10 +35,15 @@ def create_new_list_report():
 
     index = 2
     sheet_id = get_sheet_id(get_cur_m)
-    for user_data in usersReport:
-        sheet_report.add_line(table_id, get_cur_m , [user_data])
 
+
+    sheet_report.add_line(table_id, get_cur_m , usersReport)
+
+    for user_data in usersReport:
+    
         if user_data not in exceptionUsers:
+
+            print(f"Проверяем итог у {user_data[0]}")
 
             if user_data[4] > 0:
                 sheet_report.set_cell_format(table_id, sheet_id, index,  5, bg_color= {"red": 0.2, "green": 0.6, "blue": 0.2, "alpha": 0.8})
@@ -47,8 +52,8 @@ def create_new_list_report():
             else:
                 sheet_report.set_cell_format(table_id, sheet_id, index, 5, bg_color={"red": 0.75, "green": 0.15, "blue": 0.1, "alpha": 0.8})
             index +=1 
-        time.sleep(0.3)
-
+        time.sleep(1)
+    print("Готово!")
 users = get_users_from_report()       
 create_new_list_report()
 
