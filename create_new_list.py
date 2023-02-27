@@ -1,28 +1,24 @@
-
 from spreadsheets_lib import SheetReport 
 import config as cfg
 import get_time_working_off as report
 from lib import *
 import time
 
-report.getWorkTimeBalanceReport()
-usersReport = report.users_work_time
 
-
-def get_users_from_report():
+def get_users_from_report(usersReport):
    
     return [thing[0] for thing in usersReport]
 
 def compareLists(user): 
     return user[0] not in users
 
-def create_new_list_report():
+def create_new_list_report(usersReport, list_name):
 
-    get_cur_m = today_date()
+    
     header = ["ФИО","Отгулял (ч)","Переработка (ч)","Отработано (ч)","Итог (ч)"]
 
-    sheet_report.create_page(table_id, get_cur_m)
-    sheet_report.add_line(table_id, get_cur_m, [header])
+    sheet_report.create_page(table_id, month + " "+ list_name)
+    sheet_report.add_line(table_id, list_name, [header])
     allUsers = get_act_users()
     addUsers = list(filter(compareLists, allUsers))
 
@@ -34,10 +30,8 @@ def create_new_list_report():
     usersReport.sort(key = lambda x: x[0])
 
     index = 2
-    sheet_id = get_sheet_id(get_cur_m)
-
-
-    sheet_report.add_line(table_id, get_cur_m , usersReport)
+    sheet_id = get_sheet_id(list_name)
+    sheet_report.add_line(table_id, list_name , usersReport)
 
     for user_data in usersReport:
     
@@ -54,9 +48,21 @@ def create_new_list_report():
             index +=1 
         time.sleep(1)
     print("Готово!")
-users = get_users_from_report()       
-create_new_list_report()
 
+
+months = get_need_months()
+
+today_date_v = today_date() 
+
+for month in months:
+
+    print(f"Собираю статистику по  {month} в {today_date_v}")
+    
+    user_report = report.getWorkTimeBalanceReport(month)
+    users = get_users_from_report(user_report)  
+    list_name = f"{month} {today_date_v}" 
+    print(f"Создаю новый лист {list_name}")    
+    create_new_list_report(user_report, list_name)
 
 
 

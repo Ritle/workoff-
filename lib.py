@@ -13,8 +13,6 @@ sheet_report = SheetReport(cfg.token_str, is_dev=False) # создаем объ�
 def today_date():
     return str(datetime.now()).split()[0]
 
-
-
 def get_cur_month():
     return str(datetime.today().replace(day=1)).split()[0]
 
@@ -24,8 +22,6 @@ def get_last_month():
     return str(date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day))
 
 def get_cur_day():
-
-    
     return str(datetime.today()).split(".")[0].replace(':', '-')
 
 def get_act_users():
@@ -40,4 +36,21 @@ def get_sheet_id(sheet_name):
 
     return sheets[sheet_name]
 
-print(today_date())
+def get_need_months():
+
+    today = int(get_cur_day().split()[0].split('-')[1][1])
+
+    year =  int(get_cur_day().split()[0].split('-')[0])
+
+    arr_first = []
+
+    for month in range(1, today + 1):
+
+        if month < 10:
+            month = "0" + str(month) 
+
+        date_str = f"{year}-{month}-{1}"
+        arr_first.append(date_str)
+
+    return arr_first
+

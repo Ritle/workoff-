@@ -9,11 +9,11 @@ import lib
  
 sbis_client = RPCCall(site="main", base="online.sbis.ru", sid=cfg.sid) #объект который делает вызов в сбис
 
-month = lib.get_cur_month()
-users_work_time = []
 
 
-def getWorkTimeBalanceReport():
+
+
+def getWorkTimeBalanceReport(month):
 
     page_num = 0
     users_report_json = {"jsonrpc":"2.0","protocol":6,"method":"Отгул.WorkTimeBalanceReport",
@@ -30,11 +30,7 @@ def getWorkTimeBalanceReport():
             user_PK_value = user["PK"]
             user_PersonID_value = user["PersonID"]
             workedOffTime = user["TimeoffTime"]
-
-            
-           
-            
-            getUserReport(user_name_value, user_PK_value, user_PersonID_value, workedOffTime)
+            getUserReport(user_name_value, user_PK_value, user_PersonID_value, workedOffTime, month)
 
         page_num += 1
         users_report_json = {"jsonrpc":"2.0","protocol":6,"method":"Отгул.WorkTimeBalanceReport",
@@ -45,8 +41,9 @@ def getWorkTimeBalanceReport():
         users = sbis_client.post_request(users_report_json).recordset()
 
 
-def getUserReport(user_name, user_PK, user_PersonID, workedOffTime):
+def getUserReport(user_name, user_PK, user_PersonID, workedOffTime, month):
 
+    users_work_time = []
     time.sleep(1)
 
     print("Проверяем", user_name)
@@ -108,7 +105,7 @@ def getUserReport(user_name, user_PK, user_PersonID, workedOffTime):
     else:
         workTimeOut = ""
    
-
+    
     users_work_time.append([user_name, workedOffTime, workTime,  workTimeOut, itog])
 
     print( f"У {user_name}, отгулов {workedOffTime} ч. переработок {workTime} ч. отработано календарем {workTimeOut} ч") 
