@@ -14,6 +14,7 @@ sbis_client = RPCCall(site="main", base="online.sbis.ru", sid=cfg.sid) #объе
 
 
 def getWorkTimeBalanceReport(month):
+    users_work_time = []
 
     page_num = 0
     users_report_json = {"jsonrpc":"2.0","protocol":6,"method":"Отгул.WorkTimeBalanceReport",
@@ -30,7 +31,9 @@ def getWorkTimeBalanceReport(month):
             user_PK_value = user["PK"]
             user_PersonID_value = user["PersonID"]
             workedOffTime = user["TimeoffTime"]
-            getUserReport(user_name_value, user_PK_value, user_PersonID_value, workedOffTime, month)
+            users_work_time_users = getUserReport(user_name_value, user_PK_value, user_PersonID_value, workedOffTime, month)
+
+            users_work_time.append(users_work_time_users)
 
         page_num += 1
         users_report_json = {"jsonrpc":"2.0","protocol":6,"method":"Отгул.WorkTimeBalanceReport",
@@ -40,18 +43,16 @@ def getWorkTimeBalanceReport(month):
 
         users = sbis_client.post_request(users_report_json).recordset()
 
+    return users_work_time
 
 def getUserReport(user_name, user_PK, user_PersonID, workedOffTime, month):
 
-    users_work_time = []
     time.sleep(1)
-
     print("Проверяем", user_name)
 
     page_num_user = 0
     workTime = 0
     workTimeOut = 0
-
     WorkTimeBalanceReportUser = {"jsonrpc":"2.0","protocol":6,"method":"Отгул.WorkTimeBalanceReport",
     "params":{"Фильтр":{"d":[user_PK,month,"-2",user_PersonID,None,None,0],"s":[{"t":"Число целое","n":"Parent"},{"t":"Строка","n":"Дата"},{"t":"Строка","n":"Организация"},{"t":"Число целое","n":"Подразделение"},{"t":"Строка","n":"Состояния"},{"t":"Строка","n":"ТипОтгула"},{"t":"Число целое","n":"ТипОтчета"}],"_type":"record","f":0},"Сортировка":None,
     "Навигация":{"d":[True,25,page_num_user],"s":[{"t":"Логическое","n":"ЕстьЕще"},{"t":"Число целое","n":"РазмерСтраницы"},{"t":"Число целое","n":"Страница"}],"_type":"record","f":0},"ДопПоля":[]},"id":1}
@@ -105,12 +106,9 @@ def getUserReport(user_name, user_PK, user_PersonID, workedOffTime, month):
     else:
         workTimeOut = ""
    
-    
-    users_work_time.append([user_name, workedOffTime, workTime,  workTimeOut, itog])
-
     print( f"У {user_name}, отгулов {workedOffTime} ч. переработок {workTime} ч. отработано календарем {workTimeOut} ч") 
 
-    return users_work_time
+    return [user_name, workedOffTime, workTime,  workTimeOut, itog]
 
 
 
