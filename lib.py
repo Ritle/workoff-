@@ -53,3 +53,14 @@ def get_need_months():
 
     return arr_first
 
+
+
+def get_last_stat_sheet():
+
+    fullstat = sheet_report.read_list(table_id, "Сводная")["values"]
+
+    
+
+    return [full[-1] for full in fullstat]
+
+

@@ -4,6 +4,13 @@ import get_time_working_off as report
 from lib import *
 import time
 
+
+def findIndexNameInReport(name, report):
+    for v in report:
+        if name in v:
+            return report.index(v)
+
+
 def convertNumMonth(num):
     
     return calendar[num - 1]
@@ -18,8 +25,25 @@ def get_users_from_report(usersReport):
 def compareLists(user): 
     return user[0] not in users
 
+def check_itog(itog):
+    return itog[4] != 0
+
 def fill_final_report(col):
+
     print(f"Заполняю сводную за {col[0]}")
+
+    num_len = len(sheet_report.read_list(table_id, "Сводная")["values"][0])
+
+    if num_len > 1:
+        last_month = col
+        pre_last_month = get_last_stat_sheet()
+        new_list = []
+        for (last, pre_last) in zip(last_month ,pre_last_month ):
+            if type(last) == str and type(pre_last) ==str:
+                new_list.append(last)
+            else:   
+                new_list.append(last + float(pre_last.replace(',', '.')))
+        col = new_list
 
     data_set = []
     
@@ -43,35 +67,35 @@ def create_new_list_report(usersReport, list_name):
     usersReport.extend(addUsers)
     usersReport.sort(key = lambda x: x[0])
 
-    index = 2
     sheet_id = get_sheet_id(list_name)
-
-
     sheet_report.add_line(table_id, list_name , usersReport)
 
-    for user_data in usersReport:
+    format_user_report = list(filter(check_itog, usersReport))
+
+    for user_data in format_user_report:
         print(f"Проверяем итог у {user_data[0]}")
+        index = findIndexNameInReport(user_data[0], usersReport) +  2
         if user_data[4] > 0:
             sheet_report.set_cell_format(table_id, sheet_id, index,  5, bg_color= {"red": 0.5, "green": 0.8, "blue": 0.5, "alpha": 1})
 
         if user_data[4] < 0:
             sheet_report.set_cell_format(table_id, sheet_id, index,  5, bg_color= {"red": 0.9, "green": 0.5, "blue": 0.5, "alpha": 1})
-        index +=1 
+       
         time.sleep(1)
 
     final_report = [list_name]
 
     final_report.extend([thing[4] for thing in usersReport])
 
-    
+    fill_final_report(final_report)
+
     print("Готово!")
 
-    return final_report
     
 months = get_need_months()
 
 today_date_v = today_date() 
-final_report = []
+
 for month in months:
 
     sheets = sheet_report.sheet_list(table_id)
@@ -90,13 +114,11 @@ for month in months:
         users = get_users_from_report(user_report)  
         
         print(f"Создаю новый лист {list_name}")    
-        final_report.append(create_new_list_report(user_report, list_name))  
+        create_new_list_report(user_report, list_name)
     else:
         print(f"Статистика за {month_name} {year_num} уже собрана") 
 
-
-    #if len(final_report) > 1:
-        
+       
 
 
 
