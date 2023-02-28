@@ -4,7 +4,7 @@ import config as cfg
 
 
 exceptionUsers = ["Гордеев Андрей", "Липовская Наталья", "Лутченко Юлия", "Макина Кристина", "Соловьева Екатерина", "Шарова Екатерина"]
-
+calendar = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
 table_id = cfg.google_report_table_id
 
 
@@ -48,8 +48,7 @@ def get_need_months():
 
         if month < 10:
             month = "0" + str(month) 
-
-        date_str = f"{year}-{month}-{1}"
+        date_str = f"{year}-{month}-01"
         arr_first.append(date_str)
 
     return arr_first

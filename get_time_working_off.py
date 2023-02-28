@@ -5,12 +5,9 @@ from datetime import timedelta as tdm
 import time
 import config as cfg
 
-import lib
+import lib 
  
 sbis_client = RPCCall(site="main", base="online.sbis.ru", sid=cfg.sid) #объект который делает вызов в сбис
-
-
-
 
 
 def getWorkTimeBalanceReport(month):
@@ -27,13 +24,15 @@ def getWorkTimeBalanceReport(month):
     while users:
 
         for user in users:
-            user_name_value = user["Name"]
-            user_PK_value = user["PK"]
-            user_PersonID_value = user["PersonID"]
-            workedOffTime = user["TimeoffTime"]
-            users_work_time_users = getUserReport(user_name_value, user_PK_value, user_PersonID_value, workedOffTime, month)
 
-            users_work_time.append(users_work_time_users)
+            if user["Name"] not in lib.exceptionUsers:
+                user_name_value = user["Name"]
+                user_PK_value = user["PK"]
+                user_PersonID_value = user["PersonID"]
+                workedOffTime = user["TimeoffTime"]
+                users_work_time_users = getUserReport(user_name_value, user_PK_value, user_PersonID_value, workedOffTime, month)
+
+                users_work_time.append(users_work_time_users)
 
         page_num += 1
         users_report_json = {"jsonrpc":"2.0","protocol":6,"method":"Отгул.WorkTimeBalanceReport",
