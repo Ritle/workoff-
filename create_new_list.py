@@ -104,10 +104,7 @@ for month in months:
 
     month_name = convertNumMonth(month_num)
     list_name = f"{month_name} {year_num} {today_date_v}"
-    print(f"Собираю статистику по  {list_name}")   
-
-
-    
+    print(f"Собираю статистику по  {list_name}")      
     if list_name not in sheets:
 
         user_report = report.getWorkTimeBalanceReport(month)

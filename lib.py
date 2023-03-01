@@ -64,3 +64,20 @@ def get_last_stat_sheet():
     return [full[-1] for full in fullstat]
 
 
+def findIndexNameInReport(name, report):
+    for v in report:
+        if name in v:
+            return report.index(v)
+
+
+def convertNumMonth(num):
+    
+    return calendar[num - 1]
+
+def getIndexMonth(name):
+    return calendar.index(name)
+
+def get_users_from_report(usersReport):
+   
+    return [thing[0] for thing in usersReport]
+
