@@ -8,7 +8,7 @@ calendar = ["Январь", "Февраль", "Март", "Апрель", "Ма�
 table_id = cfg.google_report_table_id
 
 
-sheet_report = SheetReport(cfg.token_str, is_dev=False) # создаем объект который читает из экселя
+sheet_report = SheetReport(cfg.token_str, is_dev=True) # создаем объект который читает из экселя
 
 def today_date():
     return str(datetime.now()).split()[0]
@@ -80,4 +80,22 @@ def getIndexMonth(name):
 def get_users_from_report(usersReport):
    
     return [thing[0] for thing in usersReport]
+
+def convertDate(c):
+
+    try:
+        c = str(c)
+        arr_c = c.split('.')
+        if(int(arr_c[1]) == 0):
+            t = f"{int(c[0])}:00"
+        if (int(arr_c[1]) > 0):
+            hour = int(arr_c[0])
+            t = f"{hour}:{abs(round((float(c)-hour)*60))}"    
+            return t
+        elif(c == ""): 
+            return c
+        elif(c == '0.0'): 
+            return f"0:00"
+    except:
+        return c
 
