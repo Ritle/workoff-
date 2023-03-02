@@ -69,7 +69,8 @@ def create_new_list_report(usersReport, list_name):
 
     new_c = []
     for c_v in usersReport:
-        new_c.append(convertDate(c_v))
+        new_elem = convertDate(c_v)
+        new_c.append(new_elem)
 
     sheet_id = get_sheet_id(list_name)
     sheet_report.add_line(table_id, list_name , new_c)

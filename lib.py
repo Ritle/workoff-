@@ -8,7 +8,7 @@ calendar = ["Январь", "Февраль", "Март", "Апрель", "Ма�
 table_id = cfg.google_report_table_id
 
 
-sheet_report = SheetReport(cfg.token_str, is_dev=True) # создаем объект который читает из экселя
+sheet_report = SheetReport(cfg.token_str, is_dev=False) # создаем объект который читает из экселя
 
 def today_date():
     return str(datetime.now()).split()[0]
