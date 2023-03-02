@@ -48,7 +48,7 @@ def fill_final_report(col):
     data_set = []
     
     for col_v in col:
-        data_set.append([col_v])
+        data_set.append([convertDate(col_v)])
 
     col_num = getIndexMonth(col[0].split()[0])
     sheet_report.insert_range(table_id, "Сводная", data_set, 0, len(data_set), col_num+1, col_num+1)
@@ -67,8 +67,12 @@ def create_new_list_report(usersReport, list_name):
     usersReport.extend(addUsers)
     usersReport.sort(key = lambda x: x[0])
 
+    new_c = []
+    for c_v in usersReport:
+        new_c.append(convertDate(c_v))
+
     sheet_id = get_sheet_id(list_name)
-    sheet_report.add_line(table_id, list_name , usersReport)
+    sheet_report.add_line(table_id, list_name , new_c)
 
     format_user_report = list(filter(check_itog, usersReport))
 
