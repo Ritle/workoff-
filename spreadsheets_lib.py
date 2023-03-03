@@ -255,3 +255,76 @@ class SheetReport():
                 time.sleep(60)
         print(f'Ошибка при отправке запроса insert_range():\n{err_msg}', 'e')
         exit(1)
+
+    def set_format(self, sheet_id, list_id, start, end, type, color):
+
+        json_body = {
+            "requests": [
+                {
+                    "addConditionalFormatRule": {
+                        "rule": {
+                            "ranges": [
+                                {
+                                    "sheetId": list_id,
+                                    "startColumnIndex": start,
+                                    "endColumnIndex": end,
+                                }
+                            ],
+                            "booleanRule": 
+                            {
+                                "condition": { "type": type, "values": [{"userEnteredValue": "0"}]},
+                                "format": {"backgroundColor": color}
+                            }, 
+                            
+
+                        },
+                        "index": 0
+                    }
+                }
+            ]
+        }
+
+        err_cnt = 5
+        err_msg = ''
+        while err_cnt > 0:
+            try:
+                self.sheet_obj.batchUpdate(spreadsheetId= sheet_id, body=json_body).execute()
+                return
+            except Exception as e:
+                err_msg = str(e)
+                print(f'{err_cnt}: {err_msg}')
+                err_cnt -= 1
+                time.sleep(60)
+        print(f'Ошибка при отправке запроса insert_range():\n{err_msg}', 'e')
+        exit(1)
+        
+
+
+    def autoSizeColumn(self, sheet_id, list_id, start, end):
+        json_body = {
+        "requests": [
+            {
+            "autoResizeDimensions": {
+                "dimensions": {
+                "sheetId": list_id,
+                "dimension": "COLUMNS",
+                "startIndex": start,
+                "endIndex": end
+                }
+            }
+            }
+        ]
+        }
+        err_cnt = 5
+        err_msg = ''
+        while err_cnt > 0:
+            try:
+                self.sheet_obj.batchUpdate(spreadsheetId= sheet_id, body=json_body).execute()
+                return
+            except Exception as e:
+                err_msg = str(e)
+                print(f'{err_cnt}: {err_msg}')
+                err_cnt -= 1
+                time.sleep(60)
+        print(f'Ошибка при отправке запроса insert_range():\n{err_msg}', 'e')
+        exit(1)
