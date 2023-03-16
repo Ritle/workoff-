@@ -95,11 +95,9 @@ def create_new_list_report(users,month_name, usersReport, list_name):
     print("Готово!")
 
 
-def start():
+def start(sid):
 
     for month in months:
-
-        
 
         sheets = sheet_report.sheet_list(table_id)
         month_num = int(month.split("-")[1][1])
@@ -110,7 +108,7 @@ def start():
         print(f"Собираю статистику по  {list_name}")      
         if list_name not in sheets:
 
-            user_report = report.getWorkTimeBalanceReport(month)
+            user_report = report.getWorkTimeBalanceReport(sid, month)
             users = get_users_from_report(user_report)  
             
             print(f"Создаю новый лист {list_name}")    
@@ -120,9 +118,6 @@ def start():
 
        
 
-
-
-start()
 
 
     

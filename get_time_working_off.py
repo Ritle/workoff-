@@ -7,44 +7,38 @@ import config as cfg
 
 import lib 
  
-sbis_client = RPCCall(site="main", base="online.sbis.ru", sid=cfg.sid) #объект который делает вызов в сбис
+ #объект который делает вызов в сбис
 
 
-def getWorkTimeBalanceReport(month):
+def getWorkTimeBalanceReport(user_sid , month):
+
+    sbis_client = RPCCall(site="main", base="online.sbis.ru", sid=user_sid)
     users_work_time = []
-
     page_num = 0
     users_report_json = {"jsonrpc":"2.0","protocol":6,"method":"Отгул.WorkTimeBalanceReport",
     "params":{"Фильтр":{"d":[None, month,"-2",14466637,None,None,0],
     "s":[{"t":"Строка","n":"Parent"},{"t":"Строка","n":"Дата"},{"t":"Строка","n":"Организация"},{"t":"Число целое","n":"Подразделение"},{"t":"Строка","n":"Состояния"},{"t":"Строка","n":"ТипОтгула"},{"t":"Число целое","n":"ТипОтчета"}],"_type":"record","f":0},"Сортировка":None,
     "Навигация":{"d":[True,25,page_num],"s":[{"t":"Логическое","n":"ЕстьЕще"},{"t":"Число целое","n":"РазмерСтраницы"},{"t":"Число целое","n":"Страница"}],"_type":"record","f":0},"ДопПоля":[]},"id":1}
-
     users = sbis_client.post_request(users_report_json).recordset()
-
     while users:
-
         for user in users:
-
             if user["Name"] not in lib.exceptionUsers:
                 user_name_value = user["Name"]
                 user_PK_value = user["PK"]
                 user_PersonID_value = user["PersonID"]
                 workedOffTime = user["TimeoffTime"]
-                users_work_time_users = getUserReport(user_name_value, user_PK_value, user_PersonID_value, workedOffTime, month)
-
+                users_work_time_users = getUserReport(sbis_client, user_name_value, user_PK_value, user_PersonID_value, workedOffTime, month)
                 users_work_time.append(users_work_time_users)
-
         page_num += 1
         users_report_json = {"jsonrpc":"2.0","protocol":6,"method":"Отгул.WorkTimeBalanceReport",
         "params":{"Фильтр":{"d":[None, month,"-2",14466637,None,None,0],
         "s":[{"t":"Строка","n":"Parent"},{"t":"Строка","n":"Дата"},{"t":"Строка","n":"Организация"},{"t":"Число целое","n":"Подразделение"},{"t":"Строка","n":"Состояния"},{"t":"Строка","n":"ТипОтгула"},{"t":"Число целое","n":"ТипОтчета"}],"_type":"record","f":0},"Сортировка":None,
         "Навигация":{"d":[True, 25, page_num],"s":[{"t":"Логическое","n":"ЕстьЕще"},{"t":"Число целое","n":"РазмерСтраницы"},{"t":"Число целое","n":"Страница"}],"_type":"record","f":0},"ДопПоля":[]},"id":1}
-
         users = sbis_client.post_request(users_report_json).recordset()
 
     return users_work_time
 
-def getUserReport(user_name, user_PK, user_PersonID, workedOffTime, month):
+def getUserReport(sbis_client, user_name, user_PK, user_PersonID, workedOffTime, month):
 
     time.sleep(1)
     print("Проверяем", user_name)

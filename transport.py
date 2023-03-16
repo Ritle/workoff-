@@ -15,6 +15,8 @@ import json
 from copy import deepcopy
 from requests import post, get
 
+
+
 PATH_AUTH = "/auth/service/sbis-rpc-service300.dll"  # url для авторизации
 BASE_URL = "cloud.sbis.ru"
 HEADERS_DEFAULT = {'Content-type': 'application/json; charset=UTF-8',
@@ -23,7 +25,9 @@ HEADERS_DEFAULT = {'Content-type': 'application/json; charset=UTF-8',
 SID_PRIVAT = "00000003-00000003-000a-0000000000000000"  # SID для приват логики
 INFO_TO_CONSOLE = False  # Вывод в консоль url и json запроса
 
-
+def get_goodle_token():
+    token = get('http://10.76.120.189:8080/get_token').text
+    return token
 def recordset_friendly(recordset):
     """
     Метод преобразует словарь вида sbis-record (с секциями "d" и "s") в обычный json
@@ -286,3 +290,5 @@ def get_file(url: str, name: str) -> bool:
         print(f"Ошибка скачивания файла: {exc}")
         return False
     return True
+
+
