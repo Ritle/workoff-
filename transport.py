@@ -25,7 +25,7 @@ HEADERS_DEFAULT = {'Content-type': 'application/json; charset=UTF-8',
 SID_PRIVAT = "00000003-00000003-000a-0000000000000000"  # SID для приват логики
 INFO_TO_CONSOLE = False  # Вывод в консоль url и json запроса
 
-def get_goodle_token():
+def get_google_token():
     token = get('http://10.76.120.189:8080/get_token').text
     return token
 def recordset_friendly(recordset):
@@ -292,3 +292,4 @@ def get_file(url: str, name: str) -> bool:
     return True
 
 
+print(get_google_token())
