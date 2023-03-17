@@ -1,8 +1,8 @@
 from spreadsheets_lib import SheetReport 
-import config as cfg
+
 import get_time_working_off as report
 from lib import *
-import time
+
 
 
 def findIndexNameInReport(name, report):
