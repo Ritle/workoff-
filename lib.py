@@ -143,9 +143,3 @@ def str_to_hours(s):
 months = get_need_months()
 today_date_v = today_date() 
 
-
-
-
-
-
-print(convertDate([1.4]))

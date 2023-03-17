@@ -30,7 +30,7 @@ def get_sid(message):
 @bot.message_handler(content_types=["text"])
 def check_sid(message):
     if len(message.text) == 39:
-        my_bot.send_msg(message.chat.id,"Начинаю работу")
+        my_bot.send_msg(message.chat.id,"Начинаю работу. Процесс сбора статистики за 1 месяц примерно 2 минуты.")
         create_new_list.start(message.text)
         my_bot.send_msg(message.chat.id,"Все готово")
 

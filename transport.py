@@ -291,5 +291,3 @@ def get_file(url: str, name: str) -> bool:
         return False
     return True
 
-
-print(get_google_token())
