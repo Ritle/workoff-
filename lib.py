@@ -96,7 +96,7 @@ def convertDate(c):
             if(int(arr_c[1]) == 0):
 
                 if(c_v[0] == "-"):
-                    t = f"-{int(abs(int(arr_c[0])))}:00"
+                    t = f"-{int(abs(int(arr_c[0])))}:00:00"
                 else:
                     t = f"{int(abs(int(arr_c[0])))}:00:00"
                 
@@ -105,7 +105,7 @@ def convertDate(c):
                 hour = int(arr_c[0])
 
                 if(c_v[0] == "-"):
-                    t = f"-{abs(hour)}:0{abs(round((float(c_v)-hour)*60))}"   
+                    t = f"-{abs(hour)}:0{abs(round((float(c_v)-hour)*60))}:00"   
                 else:
                     t = f"{abs(hour)}:0{abs(round((float(c_v)-hour)*60))}:00" 
 
@@ -114,7 +114,7 @@ def convertDate(c):
                 hour = int(arr_c[0])
 
                 if(c_v[0] == "-"):
-                    t = f"-{abs(hour)}:{abs(round((float(c_v)-hour)*60))}"   
+                    t = f"-{abs(hour)}:{abs(round((float(c_v)-hour)*60))}:00"   
                 else:
                     t = f"{abs(hour)}:{abs(round((float(c_v)-hour)*60))}:00" 
 
